@@ -36,7 +36,11 @@ void AActorWeaponClass::Shoot(FVector LineTraceStart,FVector LineTraceEnd)
 	if (!isTaken) return;
 	if (isEmpty) return;
 	if (CurrentAmmo == 1) isEmpty = true;
-
+	
+	FHitResult OutHit;
+	FCollisionQueryParams CollisionParams;
+	bool isHit = ActorLineTraceSingle(OutHit,LineTraceStart,LineTraceEnd,ECC_WorldStatic,CollisionParams);
+	
 	DrawDebugLine(
 		GetWorld(),
 		LineTraceStart,
@@ -46,17 +50,22 @@ void AActorWeaponClass::Shoot(FVector LineTraceStart,FVector LineTraceEnd)
 		3.0f,
 		0,
 		20);
+	if (isHit)
+	{
+		if (GEngine)
+		{
+			GEngine->AddOnScreenDebugMessage(-1,1.0f,FColor::Red,FString::Printf(TEXT("Component hit: %s"),*OutHit.GetComponent()->GetName()));
+		}
+	}
 	CurrentAmmo -= AmmoToLose ;
 }
 
 void AActorWeaponClass::Reloading()
 {
 	if (!isTaken) return;
-	if (!isEmpty) return;
-
-
-	CurrentAmmo = MaxAmmo;
-	isEmpty = false;
+	
+		CurrentAmmo = MaxAmmo;
+		isEmpty = false;
 }
 
 

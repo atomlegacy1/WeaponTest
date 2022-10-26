@@ -59,6 +59,8 @@ private:
 	bool isEmpty{false};
 	UPROPERTY();
 	bool isTaken{false};
+	UPROPERTY()
+	bool isCanReload{false};
 
 #pragma endregion
 
