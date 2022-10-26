@@ -52,7 +52,7 @@ void AActorWeaponClass::Reloading()
 
 	if (!isEmpty) return;
 	CurrentAmmo = MaxAmmo;
-	
+	isEmpty = false;
 }
 
 int AActorWeaponClass::GetCurrentAmmo()
