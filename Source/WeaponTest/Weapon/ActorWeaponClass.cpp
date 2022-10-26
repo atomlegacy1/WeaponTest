@@ -2,6 +2,7 @@
 
 #include "ActorWeaponClass.h"
 #include "DrawDebugHelpers.h"
+#include "WeaponTest/WeaponTestCharacter.h"
 
 
 AActorWeaponClass::AActorWeaponClass()
@@ -20,8 +21,8 @@ AActorWeaponClass::AActorWeaponClass()
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(FName("BoxCollision"));
 	BoxCollision->SetupAttachment(SceneRootComponent);
-	BoxCollision->SetCollisionProfileName("Trigger");
-
+	BoxCollision->SetGenerateOverlapEvents(true);
+	
 }
 
 void AActorWeaponClass::BeginPlay()
@@ -30,15 +31,16 @@ void AActorWeaponClass::BeginPlay()
 	CurrentAmmo = MaxAmmo;
 	
 }
-void AActorWeaponClass::Shoot()
+void AActorWeaponClass::Shoot(FVector LineTraceStart,FVector LineTraceEnd)
 {
+	if (!isTaken) return;
 	if (isEmpty) return;
 	if (CurrentAmmo == 1) isEmpty = true;
-	
+
 	DrawDebugLine(
 		GetWorld(),
-		SceneRootComponent->GetComponentLocation(),
-		ArrowComponent->GetComponentLocation(),
+		LineTraceStart,
+		LineTraceEnd,
 		FColor(255,0,0),
 		false,
 		3.0f,
@@ -49,11 +51,14 @@ void AActorWeaponClass::Shoot()
 
 void AActorWeaponClass::Reloading()
 {
-
+	if (!isTaken) return;
 	if (!isEmpty) return;
+
+
 	CurrentAmmo = MaxAmmo;
 	isEmpty = false;
 }
+
 
 int AActorWeaponClass::GetCurrentAmmo()
 {
@@ -64,6 +69,12 @@ int AActorWeaponClass::GetMaxAmmo()
 {
 	return MaxAmmo;
 }
+
+void AActorWeaponClass::SetIsTaken(bool isTakenOption)
+{
+	isTaken=isTakenOption;
+}
+
 
 
 

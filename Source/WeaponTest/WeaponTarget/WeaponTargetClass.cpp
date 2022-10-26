@@ -8,7 +8,7 @@ AWeaponTargetClass::AWeaponTargetClass()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
-	SceneRootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRootComponent"))
+	SceneRootComponent = CreateDefaultSubobject<USceneComponent>(FName("SceneRootComponent"));
 	SetRootComponent(SceneRootComponent);
 
 	TargetMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("StaticMesh"));

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "ActorWeaponClass.generated.h"
 
@@ -28,7 +29,7 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon Action")
-	void Shoot();
+	void Shoot(FVector LineTraceStart,FVector LineTraceEnd);
 	UFUNCTION(BlueprintCallable, Category = "Weapon Action")
 	void Reloading();
 
@@ -36,6 +37,10 @@ public:
 	int GetCurrentAmmo();
 	UFUNCTION(BlueprintCallable, Category = "Weapon Ammo Action")
 	int GetMaxAmmo();
+
+	UFUNCTION(BlueprintCallable,Category = "Weapon Action")
+	void SetIsTaken(bool isTakenOption);
+
 
 #pragma endregion
 
@@ -48,9 +53,12 @@ private:
 	int MaxAmmo {10};
 	UPROPERTY();
 	int AmmoToLose{1};
-
+	
+	
 	UPROPERTY()
 	bool isEmpty{false};
+	UPROPERTY();
+	bool isTaken{false};
 
 #pragma endregion
 
@@ -58,13 +66,12 @@ private:
 
 	UPROPERTY()
 	USceneComponent* SceneRootComponent;
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* WeaponMesh;
 	UPROPERTY()
 	UArrowComponent* ArrowComponent;
 	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* BoxCollision;
-
 
 #pragma endregion
 	

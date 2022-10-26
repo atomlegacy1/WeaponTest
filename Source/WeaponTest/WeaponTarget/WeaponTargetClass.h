@@ -7,7 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "WeaponTargetClass.generated.h"
 
-UCLASS()
+UCLASS(HideCategories = (""))
 class WEAPONTEST_API AWeaponTargetClass : public AActor
 {
 	GENERATED_BODY()
@@ -27,9 +27,9 @@ private:
 
 	UPROPERTY()
 	USceneComponent* SceneRootComponent;
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* TargetMesh;
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly)
 	UBoxComponent* BoxCollision;
 
 #pragma endregion
