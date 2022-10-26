@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "ActorWeaponClass.generated.h"
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FShootDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FReloadingDelegate);
 
 UCLASS(HideCategories=("Rendering","Replication","Collision","Input","Actor","LOD","Cooking"))
 class WEAPONTEST_API AActorWeaponClass : public AActor
@@ -34,28 +33,24 @@ public:
 	void Reloading();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon Ammo Action")
-	float GetCurrentAmmo();
+	int GetCurrentAmmo();
+	UFUNCTION(BlueprintCallable, Category = "Weapon Ammo Action")
+	int GetMaxAmmo();
 
 #pragma endregion
 
 #pragma region Variables
 
 private:
-	UPROPERTY(meta=(ClampMin=0))
-	float CurrentAmmo{0};
-	UPROPERTY(meta=(ClampMax=20))
-	float MaxAmmo {20};
+	UPROPERTY()
+	int CurrentAmmo{0};
+	UPROPERTY()
+	int MaxAmmo {10};
 	UPROPERTY();
-	float AmmoToLose{1};
+	int AmmoToLose{1};
 
 	UPROPERTY()
 	bool isEmpty{false};
-
-	UPROPERTY()
-	FShootDelegate ShootDelegate;
-
-	UPROPERTY()
-	FReloadingDelegate ReloadingDelegate;
 
 #pragma endregion
 
@@ -63,9 +58,13 @@ private:
 
 	UPROPERTY()
 	USceneComponent* SceneRootComponent;
-
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY()
 	UStaticMeshComponent* WeaponMesh;
+	UPROPERTY()
+	UArrowComponent* ArrowComponent;
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* BoxCollision;
+
 
 #pragma endregion
 	

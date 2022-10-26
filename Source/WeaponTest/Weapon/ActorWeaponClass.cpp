@@ -14,36 +14,57 @@ AActorWeaponClass::AActorWeaponClass()
 	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("WeaponMeshComponent"));
 	WeaponMesh->SetupAttachment(SceneRootComponent);
 
+	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(FName("ArrowComponent"));
+	ArrowComponent->SetupAttachment(SceneRootComponent);
+	ArrowComponent->SetHiddenInGame(true);
+
+	BoxCollision = CreateDefaultSubobject<UBoxComponent>(FName("BoxCollision"));
+	BoxCollision->SetupAttachment(SceneRootComponent);
+	BoxCollision->SetCollisionProfileName("Trigger");
+
 }
 
 void AActorWeaponClass::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentAmmo = MaxAmmo;
 	
 }
 void AActorWeaponClass::Shoot()
 {
 	if (isEmpty) return;
-
+	if (CurrentAmmo == 1) isEmpty = true;
 	
-	ShootDelegate.Broadcast();
-	DrawDebugLine();
+	DrawDebugLine(
+		GetWorld(),
+		SceneRootComponent->GetComponentLocation(),
+		ArrowComponent->GetComponentLocation(),
+		FColor(255,0,0),
+		false,
+		3.0f,
+		0,
+		20);
 	CurrentAmmo -= AmmoToLose ;
 }
 
 void AActorWeaponClass::Reloading()
 {
-	if (!isEmpty) return;
 
-	ReloadingDelegate.Broadcast();
+	if (!isEmpty) return;
 	CurrentAmmo = MaxAmmo;
 	
 }
 
-float AActorWeaponClass::GetCurrentAmmo()
+int AActorWeaponClass::GetCurrentAmmo()
 {
 	return CurrentAmmo;
 }
+
+int AActorWeaponClass::GetMaxAmmo()
+{
+	return MaxAmmo;
+}
+
 
 
 
